@@ -42,9 +42,27 @@
             height: 100%;
             z-index: -1;
         }
+        span{
+            display: block;
+            font-family: monospace;
+            white-space: nowrap;
+            border-right: 4px solid;
+            width: 12ch;
+            
+            animation: typing 2s steps(12),
+            blink .5s infinite step-end alternate,
+            overflow: hidden;
+        }
+        @keyframes typing {
+        from { width: 0 }
+        }
+        @keyframes blink {
+        50% {border-color: transparent}
+        }
     </style>
 </head>
 <body>
+    <span>Hola esta es una pagina sobre el VIH</span>
     <header>
         <h1>VIH</h1>
         <h2 style="text-align: center;">Julian Moreno Villa 3B Programación</h2>
