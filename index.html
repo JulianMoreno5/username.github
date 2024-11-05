@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi pagina web acerca de VIH</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #292929;
+            color: #fff;
+            position: relative;
+            overflow-x: hidden;
+            margin: 0;
+        }
+        header h1 {
+            font-size: 2.5em;
+            color: #2c3e50;
+            text-align: center;
+        }
+        .recuadro {
+            border: 2px solid green;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            color: #000;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .carousel-container {
+            position: relative;
+            max-width: 600px;
+            margin: auto;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+        .carousel-slide {
+            display: none;
+            width: 100%;
+        }
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #2c3e50;
+            color: #fff;
+            position: relative;
+            z-index: 10;
+        }
+        #fireCanvas {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            z-index: -1;
+        }
+    </style>
+    <script>
+        window.onload = function() {
+            alert("Saludos, esta es mi pagina web acerca de el VIH espero que le guste!!");
+            showSlides();
+            initializeFire();
+            renderFire();
+        };
+
+        // Carrusel de imágenes
+        let slideIndex = 0;
+        const slides = document.getElementsByClassName("carousel-slide");
+        function showSlides() {
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) { slideIndex = 1; }
+            slides[slideIndex - 1].style.display = "block";
+            setTimeout(showSlides, 3000);
+        }
+
+        // Efecto de Fuego
+        const canvas = document.createElement("canvas");
+        document.body.appendChild(canvas);
+        canvas.id = "fireCanvas";
+        const ctx = canvas.getContext("2d");
+        const fireWidth = canvas.width = window.innerWidth;
+        const fireHeight = canvas.height = 200;
+        const firePixels = new Array(fireWidth * fireHeight).fill(0);
+
+        const fireColors = [
+            "#070707", "#1f0707", "#2f0f07", "#470f07", "#571707", "#671f07", "#771f07",
+            "#8f2707", "#9f2f07", "#af3f07", "#bf4707", "#c74707", "#DF4F07", "#DF5707",
+            "#d75f07", "#cf6f0f", "#cf770f", "#cf7f0f", "#cf8717", "#c78717", "#c7971f",
+            "#bf9f1f", "#bfa727", "#bfaF2F", "#b7b737", "#cfcf6f", "#dfdf9f", "#efefc7", "#ffffff"
+        ];
+
+        function initializeFire() {
+            for (let x = 0; x < fireWidth; x++) {
+                firePixels[(fireHeight - 1) * fireWidth + x] = fireColors.length - 1;
+            }
+        }
+
+        function updateFire() {
+            for (let x = 0; x < fireWidth; x++) {
+                for (let y = 1; y < fireHeight; y++) {
+                    const src = y * fireWidth + x;
+                    const decay = Math.floor(Math.random() * 3);
+                    const dst = src - decay - fireWidth;
+                    firePixels[dst] = firePixels[src] - decay >= 0 ? firePixels[src] - decay : 0;
+                }
+            }
+        }
+
+        function drawFire() {
+            for (let y = 0; y < fireHeight; y++) {
+                for (let x = 0; x < fireWidth; x++) {
+                    const index = y * fireWidth + x;
+                    const color = fireColors[firePixels[index]];
+                    ctx.fillStyle = color ? color : "#000";
+                    ctx.fillRect(x, y, 1, 1);
+                }
+            }
+        }
+
+        function renderFire() {
+            updateFire();
+            drawFire();
+            requestAnimationFrame(renderFire);
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>VIH</h1>
+        <h2 style="text-align: center;">Julian Moreno Villa 3B Programación</h2>
+    </header>
+    <article>
+        <div class="recuadro">
+            <h1 style="color: green; text-align: center;">Introducción</h1>
+            <p style="text-align: center;">Esta es mi página web en la que hablaré sobre el VIH</p>
+        </div>
+    </article>
+    <div class="carousel-container">
+        <img src="IMG_1348.jpeg" alt="Imagen 1" class="carousel-slide carousel-fade">
+        <img src="IMG_1349.jpeg" alt="Imagen 2" class="carousel-slide carousel-fade">
+        <img src="IMG_1350.jpeg" alt="Imagen 3" class="carousel-slide carousel-fade">
+    </div>
+    <p style="text-align: center;">Aquí se puede ver en las imágenes cómo se ve el virus.</p>
+    <div class="recuadro">
+        <h2 style="color: green; text-align: center;">Definición</h2>
+        <p style="text-align: center;">El VIH, o Virus de Inmunodeficiencia Humana, es un virus que ataca el sistema inmunológico del cuerpo humano...</p>
+        <!-- Continúa el contenido de la página -->
+    </div>
+    <footer>
+        <p>&copy; 2024 Mi Página Web VIH.</p>
+        <p>Contacto: info@moreno.julian.23@cbtis226.edu.mx</p>
+        <p>
+            <a href="#" style="color: #fff; text-decoration: none;">Política de Privacidad</a> |
+            <a href="#" style="color: #fff; text-decoration: none;">Términos de Servicio</a>
+        </p>
+    </footer>
+</body>
+</html>
