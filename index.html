@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi pagina web acerca de VIH</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #292929;
+            color: #fff;
+            margin: 0;
+            overflow: hidden;
+        }
+        header h1 {
+            font-size: 2.5em;
+            color: #2c3e50;
+            text-align: center;
+        }
+        .recuadro {
+            border: 2px solid green;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            color: #000;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #2c3e50;
+            color: #fff;
+            position: relative;
+            z-index: 10;
+        }
+        #particleCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>VIH</h1>
+        <h2 style="text-align: center;">Julian Moreno Villa 3B Programación</h2>
+    </header>
+    <article>
+        <div class="recuadro">
+            <h1 style="color: green; text-align: center;">Introducción</h1>
+            <p style="text-align: center;">Esta es mi página web en la que hablaré sobre el VIH</p>
+        </div>
+    </article>
+    <div class="recuadro">
+        <h2 style="color: green; text-align: center;">Definición</h2>
+        <p style="text-align: center;">El VIH, o Virus de Inmunodeficiencia Humana, es un virus que ataca el sistema inmunológico del cuerpo humano...</p>
+        <!-- Continúa el contenido de la página -->
+    </div>
+    <footer>
+        <p>&copy; 2024 Mi Página Web VIH.</p>
+        <p>Contacto: info@moreno.julian.23@cbtis226.edu.mx</p>
+    </footer>
+
+    <!-- Canvas para las partículas -->
+    <canvas id="particleCanvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById("particleCanvas");
+        const ctx = canvas.getContext("2d");
+
+        // Configuración del canvas para que cubra toda la pantalla
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        // Arreglo para almacenar las partículas
+        const particles = [];
+
+        // Crear partículas
+        function createParticles() {
+            for (let i = 0; i < 100; i++) {  // Ajusta el número de partículas
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 4 + 1,
+                    speedX: (Math.random() - 0.5) * 2,
+                    speedY: (Math.random() - 0.5) * 2,
+                    color: `rgba(255, 255, 255, ${Math.random()})`  // Partículas semitransparentes
+                });
+            }
+        }
+
+        // Dibujar partículas en el canvas
+        function drawParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(particle => {
+                ctx.beginPath();
+                ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                ctx.fillStyle = particle.color;
+                ctx.fill();
+            });
+        }
+
+        // Animar partículas
+        function animateParticles() {
+            particles.forEach(particle => {
+                particle.x += particle.speedX;
+                particle.y += particle.speedY;
+
+                // Rebotar en los bordes
+                if (particle.x < 0 || particle.x > canvas.width) particle.speedX *= -1;
+                if (particle.y < 0 || particle.y > canvas.height) particle.speedY *= -1;
+            });
+        }
+
+        // Función para renderizar el efecto
+        function render() {
+            drawParticles();
+            animateParticles();
+            requestAnimationFrame(render);
+        }
+
+        // Inicializar y comenzar el efecto
+        createParticles();
+        render();
+
+        // Ajustar el tamaño del canvas si cambia el tamaño de la ventana
+        window.addEventListener("resize", () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
